@@ -9,14 +9,16 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "18.20.3"
+    "node": "18"
   },
   "dependencies": {
     "@ecomplus/application-sdk": "^22.0.0-firestore.1.15.7",
-    "@google-cloud/firestore": "^7.7.0",
+    "@ecomplus/utils": "^1.4.1",
+    "@google-cloud/firestore": "^7.5.0",
+    "axios": "^1.7.2",
     "express": "^4.19.2",
-    "firebase-admin": "^12.1.1",
-    "firebase-functions": "^4.9.0"
+    "firebase-admin": "^11.11.1",
+    "firebase-functions": "^4.7.0"
   },
   "private": true
 }
