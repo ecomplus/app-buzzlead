@@ -31,6 +31,11 @@ exports.post = ({ appSdk }, req, res) => {
       }
 
       /* DO YOUR CUSTOM STUFF HERE */
+      const { token, apikey } = appData
+
+      if (!token && !apikey) {
+        res.status(401).send('App data doesnt contain token or apikey to authenticate')
+      }
 
       // all done
       res.send(ECHO_SUCCESS)
