@@ -160,7 +160,7 @@ const app = {
       schema: {
         type: 'boolean',
         default: false,
-        title: 'Enviar email pro indicador quando tiver conversão'
+        title: 'Enviar email pro indicador quando houver conversão'
       },
       hide: false
     },
@@ -169,6 +169,14 @@ const app = {
         type: 'string',
         default: false,
         title: 'ID da campanha'
+      },
+      hide: false
+    },
+    useCouponCode: {
+      schema: {
+        type: 'boolean',
+        default: false,
+        title: 'Enviar cupom de resgate'
       },
       hide: false
     },
