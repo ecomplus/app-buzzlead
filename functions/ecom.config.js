@@ -151,12 +151,27 @@ const app = {
      },
      apikey: {
        schema: {
-         type: 'boolean',
-         default: false,
+         type: 'string',
          title: 'API Key de sua conta Buzzlead'
        },
        hide: false
-     }
+     },
+     sendEmail: {
+      schema: {
+        type: 'boolean',
+        default: false,
+        title: 'Enviar email pro indicador quando tiver conversão'
+      },
+      hide: false
+    },
+    campaignId: {
+      schema: {
+        type: 'string',
+        default: false,
+        title: 'ID da campanha'
+      },
+      hide: false
+    },
   }
 }
 
