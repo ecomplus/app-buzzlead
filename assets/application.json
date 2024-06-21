@@ -1,7 +1,7 @@
 {
-  "app_id": 9000,
-  "title": "My Awesome E-Com Plus App",
-  "slug": "my-awesome-ecom-plus-app",
+  "app_id": 103277,
+  "title": "Buzzlead",
+  "slug": "buzzlead",
   "type": "external",
   "state": "active",
   "authentication": true,
@@ -16,8 +16,12 @@
     "products": [],
     "brands": [],
     "categories": [],
-    "customers": [],
-    "orders": [],
+    "customers": [
+      "GET"
+    ],
+    "orders": [
+      "GET"
+    ],
     "carts": [],
     "orders/fulfillments": [],
     "orders/payments_history": [],
@@ -26,6 +30,24 @@
     "products/price": [],
     "products/variations/price": []
   },
-  "auth_callback_uri": "https://us-central1-ecom-app-boilerplate.cloudfunctions.net/app/ecom/auth-callback",
+  "admin_settings": {
+    "token": {
+      "schema": {
+        "type": "string",
+        "maxLength": 100,
+        "title": "API Token de sua conta Buzzlead"
+      },
+      "hide": true
+    },
+    "apikey": {
+      "schema": {
+        "type": "boolean",
+        "default": false,
+        "title": "API Key de sua conta Buzzlead"
+      },
+      "hide": false
+    }
+  },
+  "auth_callback_uri": "https://us-central1-ecom-buzzlead.cloudfunctions.net/app/ecom/auth-callback",
   "version": "1.0.0"
 }
