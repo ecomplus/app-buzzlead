@@ -156,6 +156,13 @@ const app = {
        },
        hide: false
      },
+     email: {
+      schema: {
+        type: 'string',
+        title: 'Email de cadastro na buzzlead'
+      },
+      hide: false
+    },
      sendEmail: {
       schema: {
         type: 'boolean',
