@@ -24,7 +24,6 @@ module.exports = async (order, appData) => {
     if (conversionStatus === 'pendente' || conversionStatus === 'cancelado') {
       form.append('reason', 'Cliente não realizou ação de pagamento')
     }
-    // form.append('index', indicationCode); // Confirm what is index
   
     const headers = {
       'x-api-token-buzzlead': token, // Replace with your actual API token
