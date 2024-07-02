@@ -1,5 +1,6 @@
 const axios = require('axios')
 const FormData = require('form-data')
+const ecomUtils = require('@ecomplus/utils')
 
 const parseStatus = status => {
   switch (status) {
@@ -14,7 +15,7 @@ const parseStatus = status => {
   }
 }
 
-module.exports = async (order, appData) => {
+module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
   const { token, apikey, email } = appData
   const orderNumber = order.number
   const conversionStatus = parseStatus(order.financial_status && order.financial_status.current)
@@ -36,6 +37,17 @@ module.exports = async (order, appData) => {
       if (response.status === 201) {
         const responseData = response.data;
         console.log('Request successful:', responseData);
+        await appSdk.apiRequest(
+          storeId,
+          `/orders/${order._id}/metafields.json`,
+          'POST',
+          {
+            _id: ecomUtils.randomObjectId(),
+            field: 'buzzlead:update',
+            value: order.number
+          },
+          auth
+        )
   
         if (responseData.success) {
           console.log('Conversion was successful:', responseData.conversão);

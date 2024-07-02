@@ -11,7 +11,7 @@ const ECHO_SUCCESS = 'SUCCESS'
 const ECHO_SKIP = 'SKIP'
 const ECHO_API_ERROR = 'STORE_API_ERR'
 
-exports.post = ({ appSdk }, req, res) => {
+exports.post = async ({ appSdk }, req, res) => {
   // receiving notification from Store API
   const { storeId } = req
 
@@ -22,7 +22,11 @@ exports.post = ({ appSdk }, req, res) => {
   const trigger = req.body
 
   // get app configured options
-  getAppData({ appSdk, storeId })
+  let auth
+  await appSdk.getAuth(storeId).then(_auth => {
+    auth = _auth
+  })
+  getAppData({ appSdk, storeId, auth })
 
     .then(appData => {
       if (
@@ -37,108 +41,26 @@ exports.post = ({ appSdk }, req, res) => {
 
       /* DO YOUR CUSTOM STUFF HERE */
       const { resource } = trigger
-      let docId, manualQueue, isCart, isCustomer
-      const updateManualQueue = () => {
-        if (manualQueue) {
-          const data = { manual_queue: manualQueue }
-          setTimeout(() => {
-            appSdk.apiApp(storeId, 'data', 'PATCH', data).catch(console.error)
-          }, 1000)
-          manualQueue = null
-        }
-      }
-      if (resource === 'applications') {
-        const { body } = trigger
-        if (body && Array.isArray(body.manual_queue) && body.manual_queue.length) {
-          manualQueue = body.manual_queue
-          const nextId = manualQueue[0]
-          if (typeof nextId === 'string' && /[a-f0-9]{24}/.test(nextId)) {
-            docId = nextId.trim()
-          }
-          manualQueue.shift()
-        }
-      } else if (trigger.action !== 'delete') {
+      let docId
+      if (trigger.action !== 'delete' && resource === 'orders') {
         docId = trigger.resource_id || trigger.inserted_id
-        isCart = resource === 'carts'
-        isCustomer = resource === 'customers'
       }
       if (docId) {
         const docEndpoint = `orders/${docId}.json`
         return appSdk.apiRequest(storeId, docEndpoint).then(async ({ response }) => {
           const doc = response.data
-          const urls = []
-          const webhooksPromises = []
-          const addWebhook = (options) => {
-            const url = options && options.webhook_uri
-            if (url && !urls.includes(url) && ((!isCart || options.send_carts) && (!isCustomer || options.send_customers))) {
-              urls.push(url)
-              console.log(`Trigger for Store #${storeId} ${docEndpoint} => ${url}`)
-              if (
-                options.skip_pending === true &&
-                (!doc.financial_status || doc.financial_status.current === 'pending')
-              ) {
-                return null
-              }
-              console.log(`> Sending ${resource} notification`)
-              const token = options.webhook_token
-              const headerProp = options.webhook_prop_token
-              let headers
-              if (token && !headerProp) {
-                headers = {
-                  'Authorization': `Bearer ${token}`
-                }
-              } else if (token && headerProp) {
-                headers = {}
-                headers[headerProp] = token
-              }
-
-              let body = {
-                storeId,
-                trigger,
-                [isCart ? 'cart' : isCustomer ? 'customer' : 'order']: doc
-              }
-
-              webhooksPromises.push(
-                axios({
-                  method: 'post',
-                  url,
-                  headers,
-                  data: body
-                })
-                .then(({ status }) => {
-                  updateManualQueue()
-                  console.log(`> ${status}`)
-                })
-                .catch(error => {
-                  if (error.response && error.config) {
-                    const err = new Error(`#${storeId} ${docId} POST to ${error.config.url} failed`)
-                    const { status, data } = error.response
-                    err.response = {
-                      status,
-                      data: JSON.stringify(data)
-                    }
-                    err.data = JSON.stringify(error.config.data)
-                    return console.error(err)
-                  }
-                  console.error(error)
-                })
-              )
-            }
+          const order = trigger.body
+          if (order && order.financial_status && order.financial_status.current === 'pending') {
+            await sendConversion({ appSdk, storeId, auth }, doc, appData)
+          } else if (order && order.financial_status && order.financial_status.current === 'paid') {
+            await sendConversion({ appSdk, storeId, auth }, doc, appData)
+            await updateConversion({ appSdk, storeId, auth }, doc, appData)
           }
-          const { webhooks } = appData
-          if (Array.isArray(webhooks)) {
-            webhooks.forEach(addWebhook)
-          }
-          addWebhook(appData)
-          return Promise.all(webhooksPromises).then(() => {
-            if (!res.headersSent) {
-              return res.sendStatus(200)
-            }
-          })
         }).catch(error => {
           console.error(error)
           const status = error.response
-            ? error.response.status || 500 : 409
+            ? error.response.status || 500
+            : 409
           return res.sendStatus(status)
         })
       }
