@@ -144,9 +144,6 @@ const app = {
   },
 
   admin_settings: {
-    /**
-     * JSON schema based fields to be configured by merchant and saved to app `data` / `hidden_data`, such as:
-    */
      token: {
        schema: {
          type: 'string',
@@ -158,6 +155,7 @@ const app = {
      apikey: {
        schema: {
          type: 'string',
+         maxLength: 100,
          title: 'API Key de sua conta Buzzlead'
        },
        hide: false
@@ -165,6 +163,7 @@ const app = {
      email: {
       schema: {
         type: 'string',
+        maxLength: 100,
         title: 'Email de cadastro na buzzlead'
       },
       hide: false
@@ -180,7 +179,7 @@ const app = {
     campaignId: {
       schema: {
         type: 'string',
-        default: false,
+        maxLength: 100,
         title: 'ID da campanha'
       },
       hide: false
@@ -192,7 +191,7 @@ const app = {
         title: 'Enviar cupom de resgate'
       },
       hide: false
-    },
+    }
   }
 }
 
