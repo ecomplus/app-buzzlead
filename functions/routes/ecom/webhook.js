@@ -64,7 +64,6 @@ exports.post = async ({ appSdk }, req, res) => {
           return res.sendStatus(status)
         })
       }
-      updateManualQueue()
       res.sendStatus(204)
     })
 
