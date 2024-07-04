@@ -45,13 +45,13 @@
       },
       "hide": true
     },
-    "apikey": {
+    "api_key": {
       "schema": {
         "type": "string",
         "maxLength": 100,
         "title": "API Key de sua conta Buzzlead"
       },
-      "hide": false
+      "hide": true
     },
     "email": {
       "schema": {
@@ -61,7 +61,7 @@
       },
       "hide": false
     },
-    "sendEmail": {
+    "send_email": {
       "schema": {
         "type": "boolean",
         "default": false,
@@ -69,7 +69,7 @@
       },
       "hide": false
     },
-    "campaignId": {
+    "campaign_id": {
       "schema": {
         "type": "string",
         "maxLength": 100,
@@ -77,7 +77,7 @@
       },
       "hide": false
     },
-    "useCouponCode": {
+    "use_coupon_code": {
       "schema": {
         "type": "boolean",
         "default": false,
