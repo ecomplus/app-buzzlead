@@ -48,6 +48,7 @@
     "apikey": {
       "schema": {
         "type": "string",
+        "maxLength": 100,
         "title": "API Key de sua conta Buzzlead"
       },
       "hide": false
@@ -55,6 +56,7 @@
     "email": {
       "schema": {
         "type": "string",
+        "maxLength": 100,
         "title": "Email de cadastro na buzzlead"
       },
       "hide": false
@@ -70,7 +72,7 @@
     "campaignId": {
       "schema": {
         "type": "string",
-        "default": false,
+        "maxLength": 100,
         "title": "ID da campanha"
       },
       "hide": false
