@@ -83,8 +83,8 @@ const app = {
     ],
     orders: [
       'GET',           // List/read orders with public and private fields
-      // 'POST',          // Create orders
-      // 'PATCH',         // Edit orders
+      'POST',          // Create orders
+      'PATCH',         // Edit orders
       // 'PUT',           // Overwrite orders
       // 'DELETE',        // Delete orders
     ],
@@ -108,6 +108,12 @@ const app = {
       // 'GET',           // List/read order payments history events
       // 'POST',          // Create payments history entry with new status
       // 'DELETE',        // Delete payments history entry
+    ],
+
+    'orders/metafields': [
+      'GET',           // List/read order fulfillment and tracking events
+      'POST',          // Create fulfillment event with new status
+      // 'DELETE',        // Delete fulfillment event
     ],
 
     /**
