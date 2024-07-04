@@ -152,13 +152,13 @@ const app = {
        },
        hide: true
      },
-     apikey: {
+     api_key: {
        schema: {
          type: 'string',
          maxLength: 100,
          title: 'API Key de sua conta Buzzlead'
        },
-       hide: false
+       hide: true
      },
      email: {
       schema: {
@@ -168,7 +168,7 @@ const app = {
       },
       hide: false
     },
-     sendEmail: {
+     send_email: {
       schema: {
         type: 'boolean',
         default: false,
@@ -176,7 +176,7 @@ const app = {
       },
       hide: false
     },
-    campaignId: {
+    campaign_id: {
       schema: {
         type: 'string',
         maxLength: 100,
@@ -184,7 +184,7 @@ const app = {
       },
       hide: false
     },
-    useCouponCode: {
+    use_coupon_code: {
       schema: {
         type: 'boolean',
         default: false,
