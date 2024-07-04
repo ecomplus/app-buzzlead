@@ -20,11 +20,17 @@
       "GET"
     ],
     "orders": [
-      "GET"
+      "GET",
+      "POST",
+      "PATCH"
     ],
     "carts": [],
     "orders/fulfillments": [],
     "orders/payments_history": [],
+    "orders/metafields": [
+      "GET",
+      "POST"
+    ],
     "products/quantity": [],
     "products/variations/quantity": [],
     "products/price": [],
