@@ -50,12 +50,18 @@ exports.post = async ({ appSdk }, req, res) => {
         return appSdk.apiRequest(storeId, docEndpoint).then(async ({ response }) => {
           const doc = response.data
           const order = trigger.body
-          if (order && order.financial_status && order.financial_status.current === 'pending') {
-            await sendConversion({ appSdk, storeId, auth }, doc, appData)
-          } else if (order && order.financial_status && order.financial_status.current === 'paid') {
-            await sendConversion({ appSdk, storeId, auth }, doc, appData)
-            await updateConversion({ appSdk, storeId, auth }, doc, appData)
+          const { utm } = order
+          if (utm.content === 'buzzlead') {
+            if (order && order.financial_status && order.financial_status.current === 'pending') {
+              await sendConversion({ appSdk, storeId, auth }, doc, appData)
+            } else if (order && order.financial_status && order.financial_status.current === 'paid') {
+              await sendConversion({ appSdk, storeId, auth }, doc, appData)
+              await updateConversion({ appSdk, storeId, auth }, doc, appData)
+            }
+          } else {
+            console.loh('its not buzzlead')
           }
+          
         }).catch(error => {
           console.error(error)
           const status = error.response
