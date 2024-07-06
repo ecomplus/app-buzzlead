@@ -20,7 +20,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
   const orderNumber = order.number
   const conversionStatus = parseStatus(order.financial_status && order.financial_status.current)
   async function updateConversion() {
-    const url = `https://app.buzzlead.com/api/service/${email}/bonus/status/${orderNumber}/${conversionStatus} `; // Replace with the actual endpoint URL
+    const url = `https://app.buzzlead.com.br/api/service/${email}/bonus/status/${orderNumber}/${conversionStatus} `; // Replace with the actual endpoint URL
     const form = new FormData();
     if (conversionStatus === 'pendente' || conversionStatus === 'cancelado') {
       form.append('reason', 'Cliente não realizou ação de pagamento')
