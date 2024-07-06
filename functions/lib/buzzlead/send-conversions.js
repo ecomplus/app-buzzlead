@@ -18,7 +18,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
   const amountValue = amount.total - amount.freight
   const { buyers: [buyer] } = order
   async function sendConversionRequest() {
-    const url = `https://api.buzzlead.com/api/service/${email}/notification/convert` // Replace with the actual endpoint URL
+    const url = `https://app.buzzlead.com/api/service/${email}/notification/convert` // Replace with the actual endpoint URL
     const form = new FormData()
     if (campaignId) {
       form.append('campanha', Number(campaignId)) // Replace with actual campaign ID
