@@ -12,7 +12,7 @@ function convertIsoToDateString(isoString) {
 
 module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
   console.log('activating send conversion', JSON.stringify(order), JSON.stringify(appData))
-  const { token, apikey, sendEmail, campaignId, email } = appData
+  const { token, api_key, sendEmail, campaignId, email } = appData
   const orderNumber = order.number
   const { amount, utm } = order
   const indicationCode = utm && utm.content === 'buzzlead' && utm.term
@@ -38,7 +38,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
 
     const headers = {
       'x-api-token-buzzlead': token, // Replace with your actual API token
-      'x-api-key-buzzlead': apikey, // Replace with your actual API key
+      'x-api-key-buzzlead': api_key, // Replace with your actual API key
       'Content-Type': 'multipart/form-data',
       ...form.getHeaders() // This will set the correct Content-Type and boundary for the multipart/form-data
     }

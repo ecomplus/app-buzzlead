@@ -16,7 +16,7 @@ const parseStatus = status => {
 }
 
 module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
-  const { token, apikey, email } = appData
+  const { token, api_key, email } = appData
   const orderNumber = order.number
   const conversionStatus = parseStatus(order.financial_status && order.financial_status.current)
   async function updateConversion() {
@@ -28,7 +28,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
   
     const headers = {
       'x-api-token-buzzlead': token, // Replace with your actual API token
-      'x-api-key-buzzlead': apikey, // Replace with your actual API key
+      'x-api-key-buzzlead': api_key, // Replace with your actual API key
       'Content-Type': 'multipart/form-data',
       ...form.getHeaders() // This will set the correct Content-Type and boundary for the multipart/form-data
     };
