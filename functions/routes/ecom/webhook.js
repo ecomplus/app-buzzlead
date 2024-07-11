@@ -51,7 +51,7 @@ exports.post = async ({ appSdk }, req, res) => {
           const doc = response.data
           const order = trigger.body
           const { utm } = order
-          if (utm.content === 'buzzlead') {
+          if (utm && utm.content === 'buzzlead') {
             if (order && order.financial_status && order.financial_status.current === 'pending') {
               await sendConversion({ appSdk, storeId, auth }, doc, appData)
             } else if (order && order.financial_status && order.financial_status.current === 'paid') {
