@@ -11,6 +11,7 @@ function convertIsoToDateString(isoString) {
 }
 
 module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
+  console.log('activating send conversion', JSON.stringify(order), JSON.stringify(appData))
   const { token, apikey, sendEmail, campaignId, email } = appData
   const orderNumber = order.number
   const { amount, utm } = order
@@ -43,6 +44,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
 
     try {
       const response = await axios.post(url, form, { headers })
+      console.log('response data', response.data)
       if (response.status === 201) {
         const responseData = response.data
         console.log('Request successful:', responseData)
