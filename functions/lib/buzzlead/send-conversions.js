@@ -39,6 +39,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
     const headers = {
       'x-api-token-buzzlead': token, // Replace with your actual API token
       'x-api-key-buzzlead': apikey, // Replace with your actual API key
+      'Content-Type': 'multipart/form-data',
       ...form.getHeaders() // This will set the correct Content-Type and boundary for the multipart/form-data
     }
 
