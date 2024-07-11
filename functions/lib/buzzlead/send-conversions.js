@@ -30,7 +30,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
     form.append('data', convertIsoToDateString(order.created_at)) // Replace with the actual closing date of the sale
     form.append('index', 1) // Replace with the actual conversion moment index if available
     // form.append('codigoVoucher', 'voucher-code') // Replace with the actual voucher code if applicable
-    form.append('notSendMail', !sendEmail) // Set to 'true' or 'false' to control email sending
+    form.append('notSendMail', String(!sendEmail)) // Set to 'true' or 'false' to control email sending
     form.append('nome', ecomUtils.fullName(buyer)) // Replace with the actual name of the person who made the conversion
     form.append('email', buyer.main_email) // Replace with the actual email of the person who made the conversion
     form.append('documento', buyer.doc_number) // Replace with the actual CPF/CNPJ of the person who made the conversion
