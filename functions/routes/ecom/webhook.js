@@ -60,7 +60,7 @@ exports.post = async ({ appSdk }, req, res) => {
               await updateConversion({ appSdk, storeId, auth }, doc, appData)
             }
           } else {
-            console.loh('its not buzzlead')
+            console.log('its not buzzlead')
           }
           
         }).catch(error => {
