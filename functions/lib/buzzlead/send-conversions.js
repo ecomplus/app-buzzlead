@@ -1,6 +1,5 @@
 const axios = require('axios')
 const ecomUtils = require('@ecomplus/utils')
-const FormData = require('form-data')
 
 function convertIsoToDateString(isoString) {
   const date = new Date(isoString);
