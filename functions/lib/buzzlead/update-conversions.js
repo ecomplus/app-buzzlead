@@ -1,5 +1,4 @@
 const axios = require('axios')
-const FormData = require('form-data')
 const ecomUtils = require('@ecomplus/utils')
 
 const parseStatus = status => {
@@ -21,16 +20,17 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
   const conversionStatus = parseStatus(order.financial_status && order.financial_status.current)
   async function updateConversion() {
     const url = `https://app.buzzlead.com.br/api/service/${email}/bonus/status/${orderNumber}/${conversionStatus} `; // Replace with the actual endpoint URL
-    const form = new FormData();
+    const data = {
+
+    }
     if (conversionStatus === 'pendente' || conversionStatus === 'cancelado') {
-      form.append('reason', 'Cliente não realizou ação de pagamento')
+      data['reason'] = 'Cliente não realizou ação de pagamento'
     }
   
     const headers = {
       'x-api-token-buzzlead': token, // Replace with your actual API token
       'x-api-key-buzzlead': api_key, // Replace with your actual API key
-      'Content-Type': 'multipart/form-data',
-      ...form.getHeaders() // This will set the correct Content-Type and boundary for the multipart/form-data
+      'Content-Type': 'applications/json'
     };
   
     try {
