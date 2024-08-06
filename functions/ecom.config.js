@@ -155,7 +155,7 @@ const app = {
      api_key: {
        schema: {
          type: 'string',
-         maxLength: 400,
+         maxLength: 100,
          title: 'API Key de sua conta Buzzlead'
        },
        hide: true
