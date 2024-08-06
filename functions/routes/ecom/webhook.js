@@ -56,6 +56,8 @@ exports.post = async ({ appSdk }, req, res) => {
               await sendConversion({ appSdk, storeId, auth }, order, appData)
             } else if (order && order.financial_status && order.financial_status.current === 'paid') {
               await sendConversion({ appSdk, storeId, auth }, order, appData)
+              await new Promise((resolve) => setTimeout(resolve, 350))
+              console.log('time to send requests')
               await updateConversion({ appSdk, storeId, auth }, order, appData)
             }
           } else {
