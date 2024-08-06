@@ -40,7 +40,7 @@
     "token": {
       "schema": {
         "type": "string",
-        "maxLength": 100,
+        "maxLength": 400,
         "title": "API Token de sua conta Buzzlead"
       },
       "hide": true
