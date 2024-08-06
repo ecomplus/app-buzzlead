@@ -38,14 +38,18 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
       if (response.status === 201) {
         const responseData = response.data;
         console.log('Request successful:', responseData);
+        const metafields = order.metafields || []
+        metafields.push({
+          _id: ecomUtils.randomObjectId(),
+          field: 'buzzlead:update',
+          value: order.number
+        })
         await appSdk.apiRequest(
           storeId,
-          `/orders/${order._id}/metafields.json`,
-          'POST',
+          `/orders/${order._id}.json`,
+          'PATCH',
           {
-            _id: ecomUtils.randomObjectId(),
-            field: 'buzzlead:update',
-            value: order.number
+            metafields
           },
           auth
         )
