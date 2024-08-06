@@ -25,7 +25,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
       valor: amountValue,
       data: convertIsoToDateString(order.created_at),
       index: 1,
-      notSendMail: String(!sendEmail),
+      notSendMail: !sendEmail,
       nome: ecomUtils.fullName(buyer),
       email: buyer.main_email,
       documento: buyer.doc_number,
