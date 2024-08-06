@@ -20,7 +20,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
   async function sendConversionRequest() {
     const url = `https://app.buzzlead.com.br/api/service/${email}/notification/convert` // Replace with the actual endpoint URL
     const data = {
-      pedido: orderNumber,
+      pedido: String(orderNumber),
       codigo: indicationCode,
       valor: amountValue,
       data: convertIsoToDateString(order.created_at),
@@ -29,7 +29,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
       nome: ecomUtils.fullName(buyer),
       email: buyer.main_email,
       documento: buyer.doc_number,
-      telefone: ecomUtils.phone(buyer)
+      telefone: ecomUtils.phone(buyer).replaceAll(' ', '')
     }
     if (campaignId) {
       data['campanha'] = Number(campaignId)
