@@ -10,7 +10,7 @@ function convertIsoToDateString(isoString) {
 }
 
 module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
-  console.log('activating send conversion', JSON.stringify(order), JSON.stringify(appData))
+  console.log('activating send conversion', order._id, storeId)
   const { token, api_key, sendEmail, campaignId, email } = appData
   const orderNumber = order.number
   const { amount, utm } = order
@@ -21,6 +21,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
     const url = `https://app.buzzlead.com.br/api/service/${email}/notification/convert` // Replace with the actual endpoint URL
     const data = {
       pedido: orderNumber,
+      codigo: indicationCode,
       valor: amountValue,
       data: convertIsoToDateString(order.created_at),
       index: 1,
@@ -41,6 +42,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
     }
 
     try {
+      console.log('before sent conversion', JSON.stringify(data))
       const response = await axios.post(url, data, { headers })
       console.log('response data', response.data)
       if (response.status === 201) {
