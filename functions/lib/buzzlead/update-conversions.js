@@ -34,7 +34,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
     };
   
     try {
-      const response = await axios.post(url, form, { headers });
+      const response = await axios.post(url, data, { headers });
       if (response.status === 201) {
         const responseData = response.data;
         console.log('Request successful:', responseData);
