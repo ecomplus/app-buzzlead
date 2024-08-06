@@ -147,7 +147,7 @@ const app = {
      token: {
        schema: {
          type: 'string',
-         maxLength: 100,
+         maxLength: 400,
          title: 'API Token de sua conta Buzzlead'
        },
        hide: true
@@ -155,7 +155,7 @@ const app = {
      api_key: {
        schema: {
          type: 'string',
-         maxLength: 100,
+         maxLength: 400,
          title: 'API Key de sua conta Buzzlead'
        },
        hide: true
