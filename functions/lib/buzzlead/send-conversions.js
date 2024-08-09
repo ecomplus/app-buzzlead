@@ -51,7 +51,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
         metafields.push({
           _id: ecomUtils.randomObjectId(),
           field: 'buzzlead:send',
-          value: order.number
+          value: String(order.number)
         })
         console.log('Request successful:', responseData)
         await appSdk.apiRequest(

@@ -52,11 +52,15 @@ exports.post = async ({ appSdk }, req, res) => {
           const order = response.data
           const { utm } = order
           if (utm && utm.content === 'buzzlead') {
-            if (order && order.financial_status && order.financial_status.current === 'pending') {
+            if (order && order.financial_status && order.financial_status.current !== 'paid' && order.status !== 'cancelled') {
               await sendConversion({ appSdk, storeId, auth }, order, appData)
             } else if (order && order.financial_status && order.financial_status.current === 'paid') {
-              await sendConversion({ appSdk, storeId, auth }, order, appData)
-              await new Promise((resolve) => setTimeout(resolve, 350))
+              const { metafields } = order
+              const hasSendedConversion = metafields?.find(({field}) => field === 'buzzlead:send')
+              if (!hasSendedConversion) {
+                await sendConversion({ appSdk, storeId, auth }, order, appData)
+                await new Promise((resolve) => setTimeout(resolve, 500))
+              }
               console.log('time to send requests')
               await updateConversion({ appSdk, storeId, auth }, order, appData)
             }
