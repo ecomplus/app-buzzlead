@@ -65,7 +65,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
         )
 
         if (responseData.success) {
-          console.log('Conversion was successful:', responseData.conversão)
+          console.log('Conversion was successful:', responseData)
         } else {
           console.log('Conversion failed:', responseData)
         }
