@@ -31,12 +31,16 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
       index: 1,
       notSendMail: !sendEmail,
       nome: ecomUtils.fullName(buyer),
-      email: buyer.main_email,
-      documento: buyer.doc_number,
-      telefone: phoneNumber
+      documento: buyer.doc_number
+    }
+    if (phoneNumber.length === 10 || phoneNumber.length === 11) {
+      data.telefone = phoneNumber
+    }
+    if (buyer.main_email?.endsWith('.com') || buyer.main_email?.endsWith('.com.br')) {
+      data.email = buyer.main_email
     }
     if (campaignId) {
-      data['campanha'] = Number(campaignId)
+      data.campanha = Number(campaignId)
     }
     
     const headers = {
