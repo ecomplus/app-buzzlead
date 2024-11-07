@@ -3,6 +3,7 @@ const { setup } = require('@ecomplus/application-sdk')
 const logger = require('firebase-functions/logger')
 const getAppData = require('../store-api/get-app-data')
 const sendConversion = require('./send-conversions')
+const updateConversion = require('./update-conversions')
 
 const listStoreIds = () => {
   const storeIds = []
@@ -31,10 +32,11 @@ const fetchWaitingOrders = async ({ appSdk, storeId }) => {
         const { token, apikey } = appData
         if (token && apikey) {
           const d = new Date()
-          d.setDate(d.getDate() - 1)
+          d.setDate(d.getDate() - 10)
           const endpoint = '/orders.json' +
-            '?fields=_id,number,amount,financial_status,utm,buyers,created_at' +
+            '?fields=_id,number,amount,financial_status,utm,buyers,created_at,metafields' +
             '&financial_status.current=paid' +
+            '&metafields.field!=buzzlead:send' +
             `&updated_at>=${d.toISOString()}` +
             '&sort=number' +
             '&limit=100'
@@ -43,11 +45,14 @@ const fetchWaitingOrders = async ({ appSdk, storeId }) => {
             const orders = response.data.result
             for (let i = 0; i < orders.length; i++) {
               const order = orders[i]
-              await sendConversion(
-                { appSdk, storeId, auth },
-                order,
-                appData
-              )
+              const { metafields } = order
+              const hasSendedConversion = metafields?.find(({field}) => field === 'buzzlead:send')
+              if (!hasSendedConversion) {
+                await sendConversion({ appSdk, storeId, auth }, order, appData)
+                await new Promise((resolve) => setTimeout(resolve, 500))
+              }
+              console.log('time to send requests')
+              await updateConversion({ appSdk, storeId, auth }, order, appData)
             }
           } catch (_err) {
             if (_err.response) {
