@@ -73,9 +73,11 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
         )
 
         if (responseData.success) {
-          console.log('Conversion was successful:', responseData)
+          console.log('Conversion send was successful', responseData.conversão && responseData.conversão.success);
+          resolve(responseData)
         } else {
-          console.log('Conversion failed:', responseData)
+          console.log('Conversion failed:', responseData);
+          reject(responseData)
         }
       } else {
         console.log('Unexpected response status:', response.status);
