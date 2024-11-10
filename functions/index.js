@@ -149,3 +149,9 @@ const sendOrders = require('./lib/buzzlead/cron-job')
 exports.sendOrders = functions.runWith({ timeoutSeconds: 300 })
   .pubsub.schedule(cronSendOrders).onRun(sendOrders)
 console.log(`-- Sheduled send conversion ${cronSendOrders}`)
+
+const cronUpdateOrders = '24,41 * * * *'
+const updateOrders = require('./lib/buzzlead/cron-job-updade')
+exports.updateOrders = functions.runWith({ timeoutSeconds: 300 })
+  .pubsub.schedule(cronUpdateOrders).onRun(updateOrders)
+console.log(`-- Sheduled send conversion ${cronUpdateOrders}`)

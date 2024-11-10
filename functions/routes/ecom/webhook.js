@@ -57,12 +57,16 @@ exports.post = async ({ appSdk }, req, res) => {
             } else if (order && order.financial_status && order.financial_status.current === 'paid') {
               const { metafields } = order
               const hasSendedConversion = metafields?.find(({field}) => field === 'buzzlead:send')
-              if (!hasSendedConversion) {
-                await sendConversion({ appSdk, storeId, auth }, order, appData)
-                await new Promise((resolve) => setTimeout(resolve, 500))
+              try {
+                if (!hasSendedConversion) {
+                  await sendConversion({ appSdk, storeId, auth }, order, appData)
+                  await new Promise((resolve) => setTimeout(resolve, 500))
+                }
+                console.log('time to send requests')
+                await updateConversion({ appSdk, storeId, auth }, order, appData)
+              } catch (error) {
+                console.log('didnt have success', error)
               }
-              console.log('time to send requests')
-              await updateConversion({ appSdk, storeId, auth }, order, appData)
             }
           } else {
             console.log('its not buzzlead')

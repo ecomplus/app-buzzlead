@@ -36,7 +36,7 @@ const fetchWaitingOrders = async ({ appSdk, storeId }) => {
           const endpoint = '/orders.json' +
             '?fields=_id,number,amount,financial_status,utm,buyers,created_at,metafields' +
             '&financial_status.current=paid' +
-            '&metafields.field!=buzzlead:send' +
+            '&metafields.field!=buzzlead:update' +
             `&updated_at>=${d.toISOString()}` +
             '&sort=number' +
             '&limit=100'
