@@ -32,14 +32,14 @@ const fetchWaitingOrders = async ({ appSdk, storeId }) => {
         const { token, apikey } = appData
         if (token && apikey) {
           const d = new Date()
-          d.setDate(d.getDate() - 10)
+          d.setDate(d.getDate() - 2)
           const endpoint = '/orders.json' +
             '?fields=_id,number,amount,financial_status,utm,buyers,created_at,metafields' +
             '&financial_status.current=paid' +
-            '&metafields.field!=buzzlead:send' +
+            '&utm.content=buzzlead' +
             `&updated_at>=${d.toISOString()}` +
             '&sort=number' +
-            '&limit=100'
+            '&limit=1000'
           try {
             const { response } = await appSdk.apiRequest(storeId, endpoint, 'GET')
             const orders = response.data.result
@@ -47,12 +47,11 @@ const fetchWaitingOrders = async ({ appSdk, storeId }) => {
             for (let i = 0; i < orders.length; i++) {
               const order = orders[i]
               const { metafields } = order
-              const hasSendedConversion = metafields?.find(({field}) => field === 'buzzlead:send')
+              const hasSendedConversion = metafields?.find(({ field }) => field === 'buzzlead:send')
               if (!hasSendedConversion) {
                 await sendConversion({ appSdk, storeId, auth }, order, appData)
                 await new Promise((resolve) => setTimeout(resolve, 500))
               }
-              console.log('time to send requests')
               await updateConversion({ appSdk, storeId, auth }, order, appData)
             }
           } catch (_err) {
