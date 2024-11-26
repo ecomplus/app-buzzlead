@@ -144,14 +144,8 @@ exports.updateTokens = functions.pubsub.schedule(cron).onRun(() => {
 })
 console.log(`-- Sheduled update E-Com Plus tokens '${cron}'`)
 
-const cronSendOrders = '12,41 * * * *'
+const cronSendOrders = '26,51 * * * *'
 const sendOrders = require('./lib/buzzlead/cron-job')
-exports.sendOrders = functions.runWith({ timeoutSeconds: 300 })
+exports.sendOrders = functions.runWith({ timeoutSeconds: 540 })
   .pubsub.schedule(cronSendOrders).onRun(sendOrders)
 console.log(`-- Sheduled send conversion ${cronSendOrders}`)
-
-const cronUpdateOrders = '24,41 * * * *'
-const updateOrders = require('./lib/buzzlead/cron-job-updade')
-exports.updateOrders = functions.runWith({ timeoutSeconds: 300 })
-  .pubsub.schedule(cronUpdateOrders).onRun(updateOrders)
-console.log(`-- Sheduled send conversion ${cronUpdateOrders}`)
