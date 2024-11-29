@@ -85,7 +85,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
         throw new Error('Unexpected response status');
       }
     } catch (error) {
-      if (error.response?.data?.message?.includes('Conversão já gerada') {
+      if (error.response?.data?.message?.includes('Conversão já gerada')) {
         return null;
       }
       console.error('Error making request:', error);
