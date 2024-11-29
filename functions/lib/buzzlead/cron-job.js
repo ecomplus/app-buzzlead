@@ -43,15 +43,18 @@ const fetchWaitingOrders = async ({ appSdk, storeId }) => {
           try {
             const { response } = await appSdk.apiRequest(storeId, endpoint, 'GET')
             const orders = response.data.result
-            console.log('getted orders to sent', orders.length)
+            logger.info(`start exporting ${orders.length} orders for #${storeId}`, { orders })
             for (let i = 0; i < orders.length; i++) {
               const order = orders[i]
               const { metafields } = order
               const hasSendedConversion = metafields?.find(({ field }) => field === 'buzzlead:send')
               if (!hasSendedConversion) {
+                logger.info(`sending new order ${order.number} ${order._id} for #${storeId}`, { order })
                 await sendConversion({ appSdk, storeId, auth }, order, appData)
                 await new Promise((resolve) => setTimeout(resolve, 500))
+                continue
               }
+              logger.info(`updating order ${order.number} ${order._id} for #${storeId}`)
               await updateConversion({ appSdk, storeId, auth }, order, appData)
             }
           } catch (_err) {
