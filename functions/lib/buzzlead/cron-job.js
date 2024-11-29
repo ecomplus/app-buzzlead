@@ -29,7 +29,7 @@ const fetchWaitingOrders = async ({ appSdk, storeId }) => {
     getAppData({ appSdk, storeId, auth })
       .then(async (appData) => {
         resolve()
-        const { token, apikey } = appData
+        const { token, api_key: apikey } = appData
         if (token && apikey) {
           const d = new Date()
           d.setDate(d.getDate() - 2)
