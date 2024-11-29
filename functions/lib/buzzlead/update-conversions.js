@@ -25,6 +25,8 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
 
     if (conversionStatus === 'pendente' || conversionStatus === 'cancelado') {
       data['reason'] = 'Cliente não realizou ação de pagamento';
+    } else {
+      return;
     }
 
     const headers = {
