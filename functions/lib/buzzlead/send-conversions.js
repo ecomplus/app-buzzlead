@@ -74,7 +74,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
         );
 
         if (responseData.success) {
-          console.log('Conversion send was successful', responseData.conversão && responseData.conversão.success);
+          console.log('Conversion send was successful', responseData['conversão']?.success);
           return responseData;
         } else {
           console.log('Conversion failed:', responseData);
@@ -85,6 +85,9 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
         throw new Error('Unexpected response status');
       }
     } catch (error) {
+      if (error.response?.data?.message?.includes('Conversão já gerada') {
+        return null;
+      }
       console.error('Error making request:', error);
       throw error;
     }
