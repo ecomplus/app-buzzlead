@@ -5,6 +5,16 @@ const getAppData = require('../store-api/get-app-data')
 const sendConversion = require('./send-conversions')
 const updateConversion = require('./update-conversions')
 
+const debugAxiosError = error => {
+  const err = new Error(error.message)
+  if (error.response) {
+    err.status = error.response.status
+    err.response = error.response.data
+  }
+  err.request = error.config
+  logger.error(err)
+}
+
 const listStoreIds = () => {
   const storeIds = []
   const date = new Date()
@@ -45,17 +55,29 @@ const fetchWaitingOrders = async ({ appSdk, storeId }) => {
             const orders = response.data.result
             logger.info(`start exporting ${orders.length} orders for #${storeId}`, { orders })
             for (let i = 0; i < orders.length; i++) {
+              if (i > 0) {
+                await new Promise((resolve) => setTimeout(resolve, 500))
+              }
               const order = orders[i]
               const { metafields } = order
               const hasSendedConversion = metafields?.find(({ field }) => field === 'buzzlead:send')
               if (!hasSendedConversion) {
                 logger.info(`sending new order ${order.number} ${order._id} for #${storeId}`, { order })
-                await sendConversion({ appSdk, storeId, auth }, order, appData)
-                await new Promise((resolve) => setTimeout(resolve, 500))
+                try {
+                  await sendConversion({ appSdk, storeId, auth }, order, appData)
+                } catch (err) {
+                  logger.warn(`failed sending order ${order.number} ${order._id} for #${storeId}`)
+                  debugAxiosError(err)
+                }
                 continue
               }
               logger.info(`updating order ${order.number} ${order._id} for #${storeId}`)
-              await updateConversion({ appSdk, storeId, auth }, order, appData)
+              try {
+                await updateConversion({ appSdk, storeId, auth }, order, appData)
+              } catch (err) {
+                logger.warn(`failed updating order ${order.number} ${order._id} for #${storeId}`)
+                debugAxiosError(err)
+              }
             }
           } catch (_err) {
             if (_err.response) {
