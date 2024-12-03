@@ -22,11 +22,8 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
   async function updateConversion() {
     const url = `https://app.buzzlead.com.br/api/service/${email}/bonus/status/${orderNumber}/${conversionStatus}`;
     const data = {};
-
     if (conversionStatus === 'pendente' || conversionStatus === 'cancelado') {
       data['reason'] = 'Cliente não realizou ação de pagamento';
-    } else {
-      return;
     }
 
     const headers = {
@@ -55,7 +52,7 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
         );
 
         if (responseData.success) {
-          console.log('Conversion update was successful', responseData.conversão && responseData.conversão.success);
+          console.log('Conversion update was successful', responseData['conversão']?.success);
           return responseData;
         } else {
           console.log('Conversion failed:', responseData);
