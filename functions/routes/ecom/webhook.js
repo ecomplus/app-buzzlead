@@ -45,9 +45,9 @@ exports.post = async ({ appSdk }, req, res) => {
       if (trigger.action !== 'delete' && resource === 'orders') {
         docId = trigger.resource_id || trigger.inserted_id
       }
+      /*
       if (docId) {
-        // console.log('sending order', docId)
-        /*
+        console.log('sending order', docId)
         const docEndpoint = `orders/${docId}.json`
         return appSdk.apiRequest(storeId, docEndpoint).then(async ({ response }) => {
           const order = response.data
