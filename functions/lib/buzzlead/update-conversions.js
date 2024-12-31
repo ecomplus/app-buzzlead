@@ -1,4 +1,5 @@
 const axios = require('axios');
+const logger = require('firebase-functions/logger');
 const ecomUtils = require('@ecomplus/utils');
 
 const parseStatus = status => {
@@ -64,6 +65,9 @@ module.exports = async ({ appSdk, storeId, auth }, order, appData) => {
       }
     } catch (error) {
       if (error.response?.status === 412) {
+        logger.warn(`Conversion of ${orderNumber} for #${storeId} failed updating with status 412`, {
+          data: error.response.data,
+        });
         return null;
       }
       console.error('Error making request:', error);
