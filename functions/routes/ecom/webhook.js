@@ -46,7 +46,8 @@ exports.post = async ({ appSdk }, req, res) => {
         docId = trigger.resource_id || trigger.inserted_id
       }
       if (docId) {
-        console.log('sending order', docId)
+        // console.log('sending order', docId)
+        /*
         const docEndpoint = `orders/${docId}.json`
         return appSdk.apiRequest(storeId, docEndpoint).then(async ({ response }) => {
           const order = response.data
@@ -80,6 +81,8 @@ exports.post = async ({ appSdk }, req, res) => {
           return res.sendStatus(status)
         })
       }
+      */
+      console.log('nothing to do, all done on scheduled function')
       res.sendStatus(204)
     })
 
